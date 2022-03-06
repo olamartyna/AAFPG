@@ -13,7 +13,6 @@ scikit-learn
 
 librosa 
 matplotlib
-os
 IPython
 random
 warnings
