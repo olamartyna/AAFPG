@@ -11,6 +11,12 @@ def track_playing():
     title = st.text_input('Choose track title', '')
     st.write('The current movie title is', title)
 
+    tracks = st.selectbox(
+        'What are we playing?',
+        ('Queen', 'Abba', 'Adele')
+    )
+    st.write('You selected:', option)
+
     st.audio("/app/aafpg/AAFPG/data/000002.mp3", format="audio/wav", start_time=0)
 
 
