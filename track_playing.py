@@ -7,10 +7,10 @@ import streamlit.components.v1 as components
 # search bar and audio playing
 
 def track_playing():
-    path = '/AAFPG/data/00010.mp3'
+    path = "/AAFPG/data/000002.mp3"
     title = st.text_input('Choose track title', '')
     st.write('The current movie title is', title)
-    st.audio(track_id, format="audio/wav", start_time=0)
+    st.audio(path, format="audio/wav", start_time=0)
 
 
 def app():
