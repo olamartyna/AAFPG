@@ -11,7 +11,7 @@ def track_playing():
     title = st.text_input('Choose track title', '')
     st.write('The current movie title is', title)
 
-    tracks = st.selectbox(
+    option = st.selectbox(
         'What are we playing?',
         ('Queen', 'Abba', 'Adele')
     )
