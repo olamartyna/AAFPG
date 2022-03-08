@@ -17,7 +17,8 @@ import plotly.graph_objects as go
 @st.cache
 def get_plotly_data():
 
-    z_data = pd.read_csv("../AAFPG/data/metadata_with_vectors_reduced.csv")
+
+    z_data = pd.read_csv(path)
     z = z_data.values
     sh_0, sh_1 = z.shape
     x, y = np.linspace(0, 1, sh_0), np.linspace(0, 1, sh_1)
@@ -26,7 +27,8 @@ def get_plotly_data():
 
 def vis():
     # Extract input data (X)
-    metadata_with_vectors_reduced= pd.read_csv("../AAFPG/data/metadata_with_vectors_reduced.csv")
+    path = '/AAFPG/data/metadata_with_vectors_reduced.csv'
+    metadata_with_vectors_reduced= pd.read_csv(path)
     X = metadata_with_vectors_reduced.drop([
     'track_id',
     'artist_name',

@@ -7,7 +7,9 @@ import streamlit as st
 
 def loading_dataframe():
     st.write('This is our dataframe - metadata and reduced features')
-    metadata_with_vectors_reduced = pd.read_csv('../AAFPG/data/metadata_with_vectors_reduced.csv')
+
+    path = '/AAFPG/data/metadata_with_vectors_reduced.csv'
+    metadata_with_vectors_reduced = pd.read_csv(path)
     st.write(metadata_with_vectors_reduced.head(20))
 
 def app():
