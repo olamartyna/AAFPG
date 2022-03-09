@@ -9,16 +9,14 @@ import streamlit as st
 
 
 
-import home, track_playing, playlist, data_vis # ,dataframe
+import home, data_vis, playlist_visualisation # ,dataframe
 
 
 PAGES = {
     "Home page": home,
-    # "Dataframe": dataframe, we are not going to load dataframe - no point
-    "Data Visualisation": data_vis,
-    "Track playing": track_playing,
-    "Playlist": playlist
-}
+    "Playlist visualisation": playlist_visualisation,
+    "Tensorflow Projector": data_vis
+ }
 
 st.sidebar.write('### Navigation')
 

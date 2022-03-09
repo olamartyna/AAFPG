@@ -4,11 +4,11 @@
 import pandas as pd
 import numpy as np
 import streamlit as st
-
+from data_vis import path_github
 def loading_dataframe():
     st.write('This is our dataframe - metadata and reduced features')
 
-    path = '/app/AAFPG/AAFPG/data/metadata_with_vectors_reduced.csv'
+    path = path_github +'/AAFPG/data/metadata_with_vectors_reduced.csv'
     metadata_with_vectors_reduced = pd.read_csv(path)
     st.write(metadata_with_vectors_reduced.head(20))
 
