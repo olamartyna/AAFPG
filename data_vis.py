@@ -17,7 +17,7 @@ import plotly.graph_objects as go
 @st.cache
 def get_plotly_data():
 
-    path = '/app/aafpg/AAFPG/data/metadata_with_vectors_reduced.csv'
+    path = '/app/aafpg/AAFPG/data/ml_df_whole.csv'
     z_data = pd.read_csv(path)
     z = z_data.values
     sh_0, sh_1 = z.shape
@@ -27,9 +27,9 @@ def get_plotly_data():
 
 def vis():
     # Extract input data (X)
-    path = '/app/aafpg/AAFPG/data/metadata_with_vectors_reduced.csv'
-    metadata_with_vectors_reduced = pd.read_csv(path)
-    X = metadata_with_vectors_reduced.drop([
+    path = '/app/aafpg/AAFPG/data/ml_df_whole.csv'
+    ml_df_whole = pd.read_csv(path)
+    X = ml_df_whole.drop([
     'track_id',
     'artist_name',
     'album_title',
@@ -44,7 +44,7 @@ def vis():
 
     X_features = X.columns
 
-    y = metadata_with_vectors_reduced['track_genre_top']
+    y = ml_df_whole'track_genre_top']
 
     # Data must be centered around their mean before applying PCA
     scaler = MinMaxScaler()
@@ -62,7 +62,7 @@ def vis():
     # create a df with the new PCs and the categories and labels
     plot_data_pca = X_proj_3.join(y)
     #plot_data_pca = plot_data_pca.join(track_labels)
-    plot_list_pca = (list(range(0,len(metadata_with_vectors_reduced), 3)))
+    plot_list_pca = (list(range(0,len(ml_df_whole), 3)))
     plot_data_reduced_pca = plot_data_pca.iloc[plot_list_pca]
 
     # Create 3-D plot using plotly
@@ -79,7 +79,7 @@ def vis():
     x, y, z = get_plotly_data()
 
     # fig = go.Figure(data=[go.Surface(z=z, x=x, y=y)])
-    fig.update_layout(title='PCA', autosize=False, width=800, height=800, margin=dict(l=40, r=40, b=40, t=40))
+    fig.update_layout(title='Machine Learning embedding. PCA - reduced features', autosize=False, width=800, height=800, margin=dict(l=40, r=40, b=40, t=40))
     st.plotly_chart(fig)
 
 
