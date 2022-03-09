@@ -83,10 +83,6 @@ def vis():
 #     st.plotly_chart(fig)
 
 
-
-
-
-
     # Projector Tensorflow
 
     visualisation_ml = "https://projector.tensorflow.org/?config=https://gist.githubusercontent.com/scutellaria/6b7665ede566f36088a87b33da2ba620/raw/8d0c5d752a6ceda80da66c12ad0b8589af0eff25/ml_config.json"

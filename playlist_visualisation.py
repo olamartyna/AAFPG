@@ -4,11 +4,22 @@ from data_vis import path_github
 import pandas as pd
 import plotly.express as px
 
+import pandas as pd
+import numpy as np
+import os
+import IPython
+from IPython.display import Audio
+import random
+import warnings
+from scipy.spatial import distance
+
+from functions import play_track, cohesive_playlist, progressive_playlist
+
 # https://docs.streamlit.io/library/api-reference/media/st.audio
 
 
 path_github = ""
-tracks_path = path_github + 'AAFPG/data/tracks.csv'
+tracks_path = path_github + 'AAFPG/data/tracks_info.csv'
 tracks = pd.read_csv(tracks_path, index_col = 0)
 tracks['combined_info'] = tracks['artist_name']+' - '+tracks['track_title']+' - '+tracks['genre']
 
@@ -16,11 +27,17 @@ ml_pca_path = path_github + 'AAFPG/data/ml_pca.csv'
 ml_pca = pd.read_csv(ml_pca_path, index_col = 0)
 
 
+def choose_playlist_length():
+    playlist_length = st.selectbox(
+        'Playlist lenght?', (range(5, 21))
+    )
+
 def choose_track():
 
+    no_song= pd.Series(["No song selected"])
     option = st.selectbox(
         'What are we playing?',
-        (tracks['combined_info'])   #pass on a column from df to have list of artists
+        (no_song.append(tracks['combined_info']))  #pass on a column from df to have list of artists
     )
     st.write('You selected:', option)
     track_id = tracks.index[tracks['combined_info']==option][0]
@@ -45,6 +62,9 @@ def plot_ml_pca(track_id, show_all = False):
     fig.update_layout(title='Machine Learning PCA', autosize=False, width=800, height=800, margin=dict(l=40, r=40, b=40, t=40))
     st.plotly_chart(fig)
 
+
+
+
 def show_all():
     show_all = st.selectbox('Show all tracks?', ('Yes', 'No'))
     if show_all == 'Yes':
@@ -53,9 +73,12 @@ def show_all():
         return False
 
 
+
+
 def app():
     #choose_track()
     track_id = choose_track()
     # show_all()
     show_all_1 = show_all()
     plot_ml_pca(track_id, show_all_1)
+    choose_playlist_length()
