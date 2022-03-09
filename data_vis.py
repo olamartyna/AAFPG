@@ -86,8 +86,7 @@ def vis():
 
     # Projector Tensorflow
 
-    # visualisation = "https://projector.tensorflow.org/?config=https://gist.githubusercontent.com/scutellaria/6dd9a7008fe925a2d4ddaf8498ea79cb/raw/800b440e0503241619490f4189ce2b84e62a97ab/config.json"
-    visualisation = "https://gist.githubusercontent.com/scutellaria/6dd9a7008fe925a2d4ddaf8498ea79cb/raw/800b440e0503241619490f4189ce2b84e62a97ab/config.json"
+    visualisation = "https://projector.tensorflow.org/?config=https://gist.githubusercontent.com/scutellaria/6dd9a7008fe925a2d4ddaf8498ea79cb/raw/1d10517d146e190b8ca17ca1343c102265f883b1/config.json"
     st.write(f"check out this [link]({visualisation})")
 
     components.iframe("https://projector.tensorflow.org/", scrolling=False, width=1200, height=800)
