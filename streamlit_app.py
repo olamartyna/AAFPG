@@ -9,12 +9,12 @@ import streamlit as st
 
 
 
-import home, dataframe, track_playing, playlist, data_vis
+import home, track_playing, playlist, data_vis # ,dataframe
 
 
 PAGES = {
     "Home page": home,
-    "Dataframe": dataframe,
+    # "Dataframe": dataframe, we are not going to load dataframe - no point
     "Data Visualisation": data_vis,
     "Track playing": track_playing,
     "Playlist": playlist

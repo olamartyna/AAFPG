@@ -17,7 +17,7 @@ def track_playing():
     )
     st.write('You selected:', option)
 
-    st.audio("/app/aafpg/AAFPG/data/000002.mp3", format="audio/wav", start_time=0)
+    st.audio("/app/AAFPG/AAFPG/data/000002.mp3", format="audio/wav", start_time=0)
 
 
 def app():
