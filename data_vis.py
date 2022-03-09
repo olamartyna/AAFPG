@@ -17,7 +17,7 @@ import plotly.graph_objects as go
 @st.cache
 def get_plotly_data():
 
-
+    path = '/app/aafpg/AAFPG/data/metadata_with_vectors_reduced.csv'
     z_data = pd.read_csv(path)
     z = z_data.values
     sh_0, sh_1 = z.shape
