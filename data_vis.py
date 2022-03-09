@@ -44,7 +44,7 @@ def vis():
 
     X_features = X.columns
 
-    y = ml_df_whole'track_genre_top']
+    y = ml_df_whole['track_genre_top']
 
     # Data must be centered around their mean before applying PCA
     scaler = MinMaxScaler()
