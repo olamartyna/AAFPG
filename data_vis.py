@@ -27,8 +27,8 @@ def get_plotly_data():
 
 def vis():
     # Extract input data (X)
-    path = '/app/aafpg/AAFPG/data/metadata_with_vectors_reduced.csv'
-    metadata_with_vectors_reduced= pd.read_csv(path)
+    # path = '/app/aafpg/AAFPG/data/metadata_with_vectors_reduced.csv'
+    metadata_with_vectors_reduced= pd.read_csv('/app/aafpg/AAFPG/data/metadata_with_vectors_reduced.csv')
     X = metadata_with_vectors_reduced.drop([
     'track_id',
     'artist_name',
