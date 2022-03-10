@@ -163,6 +163,3 @@ def app():
 
         playlist.style.hide_index()
         st.dataframe(playlist)
-white_check_mark
-eyes
-raised_hands
