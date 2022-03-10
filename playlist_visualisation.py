@@ -6,7 +6,7 @@ import numpy as np
 
 from functions import cohesive_playlist, progressive_playlist
 
-st.set_page_config(layout="wide")
+# st.set_page_config(layout="wide")
 
 path_github = ""
 tracks_path = path_github + 'AAFPG/data/metadata_with_vectors_reduced.csv'
