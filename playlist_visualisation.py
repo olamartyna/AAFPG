@@ -125,7 +125,7 @@ def playlist_display(df, track=None):
 
 def app():
     # Initialize session states
-
+    st.markdown("<h1 style='text-align: center; color: black;'>Audio Analyses for Better Playlists</h1>", unsafe_allow_html=True)
     if 'track1' not in st.session_state:
         st.session_state.track1 = None
     if 'track2' not in st.session_state:
