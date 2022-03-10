@@ -11,7 +11,7 @@ import streamlit as st
 
 def vis():
 
-    header('The Sonic Landscape through Tensorflow Projector')
+    st.header('The Sonic Landscape through Tensorflow Projector')
 
     # Projector Tensorflow
 
@@ -24,8 +24,8 @@ def vis():
     st.write(f"Visualisation of features obtained from Deep Learning models [link]({visualisation_dl})")
     # components.iframe(visualisation_dl, scrolling=False, width=1200, height=800)
 
-def header(url):
-     st.markdown(f'<p style="background-color:#0066cc;color:#33ff33;font-size:24px;border-radius:2%;">{url}</p>', unsafe_allow_html=True)
+# def header(url):
+#      st.markdown(f'<p style="background-color:#0066cc;color:#33ff33;font-size:24px;border-radius:2%;">{url}</p>', unsafe_allow_html=True)
 
 
 def app():
