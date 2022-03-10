@@ -129,8 +129,8 @@ def app():
 
     c1, c2 = st.columns([5, 2])
 
-    # with c1:
-    c1.playlist = plot_dl_tsne(track_id_1=st.session_state.track1,
+    with c1:
+        playlist = plot_dl_tsne(track_id_1=st.session_state.track1,
                 track_id_2=st.session_state.track2,
                 show_playlist=st.session_state.show_playlist,
                 playlist_len=st.session_state.length)
