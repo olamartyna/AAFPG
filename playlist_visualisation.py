@@ -27,7 +27,6 @@ tracks['combined_info'] = tracks['artist_name']+' - '+tracks['track_title']+' - 
 dl_tsne_path = path_github + 'AAFPG/data/dl_cnn_tsne.csv'
 dl_tsne = pd.read_csv(dl_tsne_path, index_col = 0)
 
-st.markdown("<h1 style='text-align: center; color: black;'>Data Visualisation</h1>", unsafe_allow_html=True)
 tracks = tracks.loc[list(dl_tsne.index)]
 
 no_song= pd.Series(["No song selected"])
@@ -92,6 +91,7 @@ def plot_dl_tsne(track_id_1=None,
 
 def playlist_display(df, track=None):
     ''''''
+    st.markdown("<h1 style='text-align: center; color: black;'>Data Visualisation</h1>", unsafe_allow_html=True)
     op=1
     if track != None:
         op = 0.1
