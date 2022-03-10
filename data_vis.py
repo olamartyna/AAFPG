@@ -10,6 +10,7 @@ def vis():
 
     visualisation_ml = "https://projector.tensorflow.org/?config=https://gist.githubusercontent.com/scutellaria/6b7665ede566f36088a87b33da2ba620/raw/8d0c5d752a6ceda80da66c12ad0b8589af0eff25/ml_config.json"
     st.write(f"Visualisation of features obtained from Machine Learning models [link]({visualisation_ml})")
+    st.markdown("<h1 style='text-align: center; color: black;'>f"Visualisation of features obtained from Machine Learning models [link]({visualisation_ml}</h1>", unsafe_allow_html=True)
     # st.subheader(f"Visualisation of features obtained from Machine Learning models [link]({visualisation_ml})")
     # components.iframe(visualisation_ml, scrolling=False, width=1200, height=800)
 
