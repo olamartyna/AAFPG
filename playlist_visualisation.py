@@ -110,7 +110,7 @@ def playlist_display(df, track=None):
             name= 'Selected tracks'
         )
 
-    fig.update_layout(title='Deep Learning TSNE', autosize=False, width=1000, height=900, margin=dict(l=40, r=40, b=40, t=40))
+    fig.update_layout(title='Deep Learning TSNE', autosize=True, width=1000, height=900, margin=dict(l=40, r=40, b=40, t=40))
     st.plotly_chart(fig)
 
 
@@ -127,7 +127,7 @@ def app():
     if 'length' not in st.session_state:
         st.session_state.length = 10
 
-    c1, c2 = st.columns((4, 1))
+    c1, c2 = st.columns((5, 2))
 
     with c1:
         playlist = plot_dl_tsne(track_id_1=st.session_state.track1,
