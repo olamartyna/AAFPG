@@ -7,7 +7,7 @@ import random
 import warnings
 from scipy.spatial import distance
 
-path_github = "aafpg/"
+path_github = ""
 base_path = path_github + 'AAFPG/data/'
 
 
