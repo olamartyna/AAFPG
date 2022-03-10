@@ -109,8 +109,8 @@ def playlist_display(df, track=None):
             hovertext=list(selected_tracks.index),
             name= 'Selected tracks'
         )
-
-    fig.update_layout(title='Deep Learning TSNE', autosize=True, width=1000, height=900, margin=dict(l=40, r=40, b=40, t=40))
+# width=1000, height=900
+    fig.update_layout(title='Deep Learning TSNE', autosize=True,  margin=dict(l=40, r=40, b=40, t=40))
     st.plotly_chart(fig)
 
 
