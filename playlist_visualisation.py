@@ -1,8 +1,9 @@
 import streamlit as st
 import streamlit.components.v1 as components
-# from data_vis import path_github
+
 import pandas as pd
 import plotly.express as px
+import plotly.graph_objects as go
 
 import pandas as pd
 import numpy as np
@@ -18,92 +19,116 @@ from functions import play_track, cohesive_playlist, progressive_playlist
 # https://docs.streamlit.io/library/api-reference/media/st.audio
 
 
-path_github = "aafpg/"
-tracks_path = path_github + 'AAFPG/data/tracks_info.csv'
+path_github = ""
+tracks_path = path_github + 'AAFPG/data/metadata_with_vectors_reduced.csv'
 tracks = pd.read_csv(tracks_path, index_col = 0)
-tracks['combined_info'] = tracks['artist_name']+' - '+tracks['track_title']+' - '+tracks['genre']
+tracks['combined_info'] = tracks['artist_name']+' - '+tracks['track_title']+' - '+tracks['track_genre_top']
 
-ml_pca_path = path_github + 'AAFPG/data/ml_pca.csv'
-ml_pca = pd.read_csv(ml_pca_path, index_col = 0)
+dl_tsne_path = path_github + 'AAFPG/data/dl_cnn_tsne.csv'
+dl_tsne = pd.read_csv(dl_tsne_path, index_col = 0)
+
+
+tracks = tracks.loc[list(dl_tsne.index)]
+
+no_song= pd.Series(["No song selected"])
+options= no_song.append(tracks['combined_info'])
+
+def initialize_state():
+    st.session_state.track1 = None
+    st.session_state.track2 = None
+    st.session_state.show_all = 'Yes'
+    st.session_state.length = 10
 
 
 def choose_playlist_length():
-    playlist_length = st.selectbox(
-        'Playlist lenght?', (range(5, 21))
+    lenght= st.selectbox(
+        'Playlist lenght?', (range(5, 21)), key= 'length'
     )
 
 def choose_track():
 
-    no_song= pd.Series(["No song selected"])
-    option = st.selectbox(
-        'What are we playing?',
-        (no_song.append(tracks['combined_info']))  #pass on a column from df to have list of artists
-    )
-    st.write('You selected:', option)
-    track_id = tracks.index[tracks['combined_info']==option][0]
-    st.write('Track ID = ', track_id)
+    track_id = tracks.index[tracks['combined_info']==st.session_state.choose_track1][0]
+
     # st.audio(path_github +"/AAFPG/data/000002.mp3", format="audio/wav", start_time=0)
-    return track_id
+    if st.session_state.choose_track1 == "No song selected":
+        st.session_state.track1 = ""
+    st.session_state.track1 = track_id
 
-def plot_ml_pca(track_id, show_all = False):
+def choose_track2():
 
-    if show_all:
-        ml_pca_working = ml_pca
+    track_id = tracks.index[tracks['combined_info']==st.session_state.choose_track2][0]
+
+    # st.audio(path_github +"/AAFPG/data/000002.mp3", format="audio/wav", start_time=0)
+    if st.session_state.choose_track2 == "No song selected":
+        st.session_state.track2 = ""
+    st.session_state.track2 = track_id
+
+def plot_dl_tsne(track_id_1=None, track_id_2=None, show_all = 'Yes', playlist_len=10):
+
+    if show_all=='Yes':
+        playlist_display(dl_tsne, track=None)
+
+    elif track_id_1 != None and track_id_2 != None:
+        playlist= progressive_playlist(track_1=track_id_1, track_2=track_id_2,  df=dl_tsne, playlist_len=playlist_len, cosine=False)
+        playlist_display(dl_tsne, track=playlist)
+
     else:
-        ml_pca_working = ml_pca.loc[[track_id]]
+        playlist= cohesive_playlist(base_track=track_id_1, df=dl_tsne, playlist_len=playlist_len, cosine=False)
+        playlist_display(dl_tsne, track=playlist)
+        #playlist_display(dl_tsne, track=[track_id_1, track_id_2])
 
-    x, y, z = ml_pca_working['PC1'], ml_pca_working['PC2'], ml_pca_working['PC3']
-    x_range = [ml_pca['PC1'].min(), ml_pca['PC1'].max()]
-    y_range = [ml_pca['PC2'].min(), ml_pca['PC2'].max()]
-    z_range = [ml_pca['PC3'].min(), ml_pca['PC3'].max()]
-    range_x = x_range
-    color = tracks['genre'].loc[ml_pca_working.index]
-    fig = px.scatter_3d(x = x, y = y, z = z, color = color, range_x = y_range, range_y = y_range, range_z = z_range)
-    fig.update_layout(title='Machine Learning PCA', autosize=False, width=800, height=800, margin=dict(l=40, r=40, b=40, t=40))
+
+
+def playlist_display(df, track=None):
+    ''''''
+    op=1
+    if track != None:
+        op = 0.1
+    df = dl_tsne.merge(tracks['track_genre_top'], left_index=True, right_index=True)
+    fig = go.Figure(data=px.scatter_3d(df,
+        x=df['0'].values,
+        y=df['1'].values,
+        z=df['2'].values,
+        color= df['track_genre_top'],
+        size= np.full(len(df['track_genre_top']), 0.2),
+        #marker=dict(
+        #    color= 'blue',
+        #    size=3,
+        #),
+        #line=dict(
+        #    color='white',
+        #    width=0.1
+        #),
+        #showlegend=True,
+        #legendgroup='track_genre_top',
+        #hoverinfo='skip',
+        opacity=op,
+        #hovertext=list(df.index),
+        #name= 'Full tracks database'
+        ))
+    if track != None:
+        selected_tracks = df.loc[list(track)]
+        fig.add_scatter3d(
+            x=selected_tracks['0'].values,
+            y=selected_tracks['1'].values,
+            z=selected_tracks['2'].values,
+            marker=dict(
+                size=8,
+            ),
+            line=dict(
+                color='darkblue',
+                width=3
+            ),
+            hovertext=list(selected_tracks.index),
+            name= 'Selected tracks'
+        )
+
+    fig.update_layout(title='Deep Learning TSNE', autosize=False, width=800, height=800, margin=dict(l=40, r=40, b=40, t=40))
     st.plotly_chart(fig)
 
 
-import plotly.graph_objects as go
-
-def playlist_display(df, track=None):
-    '''takes the features df and plot it into a sactter 3D plot. If a track or list of track is given'''
-    selected_tracks = df.loc[track]
-
-    fig = go.Figure(data=go.Scatter3d(
-        x=selected_tracks['0'].values,
-        y=selected_tracks['1'].values,
-        z=selected_tracks['2'].values,
-        marker=dict(
-            size=4,
-        ),
-        line=dict(
-            color='darkblue',
-            width=2
-        ),
-        hovertext=list(selected_tracks.index),
-        name= 'Selected tracks'
-    ))
-
-    fig.add_scatter3d(x=df['0'].values,
-        y=df['1'].values,
-        z=df['2'].values,
-        marker=dict(
-            color='red',
-            size=3,
-        ),
-        line=dict(
-            color='white',
-            width=0.1
-        ),
-        hoverinfo='skip',
-        opacity=0.15,
-        hovertext=list(df.index),
-        name= 'Full tracks database'
-        )
-    fig.show()
-
 def show_all():
-    show_all = st.selectbox('Show all tracks?', ('Yes', 'No'))
+    show_all = st.selectbox('Show all tracks?', ('Yes', 'No'), key='show_all')
     if show_all == 'Yes':
         return True
     else:
@@ -113,9 +138,34 @@ def show_all():
 
 
 def app():
+    #
+    if 'track1' not in st.session_state:
+        initialize_state()
+    plot_dl_tsne(track_id_1=st.session_state.track1, track_id_2=st.session_state.track2, show_all=st.session_state.show_all, playlist_len=st.session_state.length)
+
     #choose_track()
-    track_id = choose_track()
+
+    option1 = st.selectbox(
+        'What are we playing?',
+        options,  #pass on a column from df to have list of artists
+        key='choose_track1',
+        on_change = choose_track
+    )
+    st.write('You selected:', option1)
+    st.write('Track ID = ', st.session_state.track1)
+
+
+    option2 = st.selectbox(
+        'Choose a second song if you want a progressive list',
+        options,  #pass on a column from df to have list of artists
+        key='choose_track2',
+        on_change = choose_track2
+    )
+    st.write('You selected:', option2)
+    st.write('Track ID = ', st.session_state.track2)
+
+
     # show_all()
-    show_all_1 = show_all()
-    plot_ml_pca(track_id, show_all_1)
+
+    st.selectbox('Show all tracks?', ('Yes', 'No'), key='show_all')
     choose_playlist_length()

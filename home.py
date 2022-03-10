@@ -3,11 +3,14 @@
 import streamlit as st
 
 def welcome():
-    st.title('AUDIO ANALYSIS FOR BETTER PLAYLIST')
+    # st.title('AUDIO ANALYSIS FOR BETTER PLAYLIST')
 
+    # from PIL import Image
+    # image = Image.open('AAFPG/data/home page image.jpg')
+    # st.image(image)
 
-    st.image('librosa-feature-melspectrogram-1.png')
-    # file source: https://librosa.org/doc/main/generated/librosa.feature.melspectrogram.html
+    st.image('AAFPG/data/home page image.jpg', width = 1920)
+
 
 def app():
     welcome()
