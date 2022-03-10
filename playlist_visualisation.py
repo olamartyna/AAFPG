@@ -8,10 +8,11 @@ from functions import cohesive_playlist, progressive_playlist
 
 # st.set_page_config(layout="wide")
 
+
 path_github = ""
 tracks_path = path_github + 'AAFPG/data/metadata_with_vectors_reduced.csv'
 tracks = pd.read_csv(tracks_path, index_col = 0)
-tracks['combined_info'] = tracks['artist_name']+' - '+tracks['track_title']+' - '+tracks['track_genre_top']
+tracks['song_info'] = tracks['artist_name']+' - '+tracks['track_title']+' - '+tracks['track_genre_top']
 
 dl_tsne_path = path_github + 'AAFPG/data/dl_cnn_tsne.csv'
 dl_tsne = pd.read_csv(dl_tsne_path, index_col = 0)
@@ -19,7 +20,7 @@ dl_tsne = pd.read_csv(dl_tsne_path, index_col = 0)
 tracks = tracks.loc[list(dl_tsne.index)]
 
 no_song= pd.Series(["No song selected"])
-options= no_song.append(tracks['combined_info'])
+options= no_song.append(tracks['song_info'])
 
 def initialize_state():
     st.session_state.track1 = None
@@ -38,7 +39,7 @@ def choose_track():
     if st.session_state.choose_track1 == "No song selected":
         st.session_state.track1 = None
     else:
-        track_id = tracks.index[tracks['combined_info']==st.session_state.choose_track1][0]
+        track_id = tracks.index[tracks['song_info']==st.session_state.choose_track1][0]
         st.session_state.track1 = track_id
 
 def choose_track2():
@@ -46,7 +47,7 @@ def choose_track2():
     if st.session_state.choose_track2 == "No song selected":
         st.session_state.track2 = None
     else:
-        track_id = tracks.index[tracks['combined_info']==st.session_state.choose_track2][0]
+        track_id = tracks.index[tracks['song_info']==st.session_state.choose_track2][0]
         st.session_state.track2 = track_id
 
 
@@ -71,7 +72,7 @@ def plot_dl_tsne(track_id_1=None,
         playlist_display(dl_tsne, track=None)
         playlist=[]
 
-    playlist_df = tracks['combined_info'].loc[playlist]
+    playlist_df = tracks['song_info'].loc[playlist]
     playlist_df = playlist_df.reset_index()
     playlist_df.columns = ['Track_Id', 'Artist - Song Name - Genre']
     playlist_df.set_index('Track_Id', inplace=True)
@@ -85,6 +86,7 @@ def playlist_display(df, track=None):
     if track != None:
         op = 0.1
     df = dl_tsne.merge(tracks['track_genre_top'], left_index=True, right_index=True)
+    df = df.merge(tracks['song_info'], left_index=True, right_index=True)
     fig = go.Figure(data=px.scatter_3d(df,
         x=df['0'].values,
         y=df['1'].values,
@@ -92,32 +94,37 @@ def playlist_display(df, track=None):
         color= df['track_genre_top'],
         size= np.full(len(df['track_genre_top']), 0.2),
         opacity=op,
+        hover_name= 'song_info'
         ))
     if track != None:
         selected_tracks = df.loc[list(track)]
+        m_size = np.full((len(track),),8)
+        m_size[0]=15
         fig.add_scatter3d(
             x=selected_tracks['0'].values,
             y=selected_tracks['1'].values,
             z=selected_tracks['2'].values,
             marker=dict(
-                size=8,
+                size=m_size,
+                color= m_size,
+                autocolorscale= True
             ),
             line=dict(
                 color='darkblue',
                 width=3
             ),
-            hovertext=list(selected_tracks.index),
-            name= 'Selected tracks'
+            hoverinfo='text',
+            hovertext=list(selected_tracks['song_info']),
+            name= 'Playlist'
         )
 
-    fig.update_layout(title='Deep Learning TSNE', autosize=True, width=1000, height=900, margin=dict(l=40, r=40, b=40, t=40))
+    fig.update_layout(title='Deep Learning TSNE', autosize=False, width=1000, height=900, margin=dict(l=40, r=40, b=40, t=40))
     st.plotly_chart(fig)
 
 
 
 def app():
     # Initialize session states
-    # st.markdown("<h1 style='text-align: center; color: black;'>Audio Analyses for Better Playlists</h1>", unsafe_allow_html=True)
 
     if 'track1' not in st.session_state:
         st.session_state.track1 = None
@@ -128,13 +135,13 @@ def app():
     if 'length' not in st.session_state:
         st.session_state.length = 10
 
-    c1, c2 = st.columns([5, 2])
+    c1, c2 = st.columns((5, 2))
 
     with c1:
         playlist = plot_dl_tsne(track_id_1=st.session_state.track1,
-                track_id_2=st.session_state.track2,
-                show_playlist=st.session_state.show_playlist,
-                playlist_len=st.session_state.length)
+                    track_id_2=st.session_state.track2,
+                    show_playlist=st.session_state.show_playlist,
+                    playlist_len=st.session_state.length)
 
     with c2:
         #choose_track()
@@ -160,7 +167,7 @@ def app():
 
         # show_all()
         choose_playlist_length()
-        st.radio('Show playlist', ('Yes', 'No'), key='show_playlist', index=1)
+        st.radio('Show playlist', ('Yes', 'No'), key='show_playlist')
 
         playlist.style.hide_index()
         st.dataframe(playlist)
