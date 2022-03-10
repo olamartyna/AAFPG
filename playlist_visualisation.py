@@ -127,7 +127,7 @@ def app():
     if 'length' not in st.session_state:
         st.session_state.length = 10
 
-    c1, c2 = st.beta_columns([5, 2])
+    c1, c2 = st.columns((4, 1))
 
     with c1:
         playlist = plot_dl_tsne(track_id_1=st.session_state.track1,
