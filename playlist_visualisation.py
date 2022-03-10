@@ -1,25 +1,14 @@
 import streamlit as st
-import streamlit.components.v1 as components
-
-import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
-
 import pandas as pd
 import numpy as np
-import os
-import IPython
-from IPython.display import Audio
-import random
-import warnings
-from scipy.spatial import distance
 
-from functions import play_track, cohesive_playlist, progressive_playlist
+from functions import cohesive_playlist, progressive_playlist
 
-# https://docs.streamlit.io/library/api-reference/media/st.audio
+st.set_page_config(layout="wide")
 
-
-path_github = "/app/aafpg/"
+path_github = ""
 tracks_path = path_github + 'AAFPG/data/metadata_with_vectors_reduced.csv'
 tracks = pd.read_csv(tracks_path, index_col = 0)
 tracks['combined_info'] = tracks['artist_name']+' - '+tracks['track_title']+' - '+tracks['track_genre_top']
@@ -86,12 +75,12 @@ def plot_dl_tsne(track_id_1=None,
     playlist_df = playlist_df.reset_index()
     playlist_df.columns = ['Track_Id', 'Artist - Song Name - Genre']
     playlist_df.set_index('Track_Id', inplace=True)
+    playlist_df.index.name = 'Track_Id'
     return playlist_df
 
 
 def playlist_display(df, track=None):
     ''''''
-    st.markdown("<h1 style='text-align: center; color: black;'>Data Visualisation</h1>", unsafe_allow_html=True)
     op=1
     if track != None:
         op = 0.1
@@ -121,13 +110,14 @@ def playlist_display(df, track=None):
             name= 'Selected tracks'
         )
 
-    fig.update_layout(title='Deep Learning TSNE', autosize=False, width=800, height=800, margin=dict(l=40, r=40, b=40, t=40))
+    fig.update_layout(title='Deep Learning TSNE', autosize=False, width=1000, height=900, margin=dict(l=40, r=40, b=40, t=40))
     st.plotly_chart(fig)
 
 
 
 def app():
     # Initialize session states
+
     if 'track1' not in st.session_state:
         st.session_state.track1 = None
     if 'track2' not in st.session_state:
@@ -136,36 +126,43 @@ def app():
         st.session_state.show_playlist = 'No'
     if 'length' not in st.session_state:
         st.session_state.length = 10
-    playlist = plot_dl_tsne(track_id_1=st.session_state.track1,
-                 track_id_2=st.session_state.track2,
-                 show_playlist=st.session_state.show_playlist,
-                 playlist_len=st.session_state.length)
 
-    #choose_track()
+    c1, c2 = st.columns((5, 2))
 
-    option1 = st.selectbox(
-        'What are we playing?',
-        options,  #pass on a column from df to have list of artists
-        key='choose_track1',
-        on_change = choose_track
-    )
-    st.write('You selected:', option1)
-    st.write('Track ID = ', st.session_state.track1)
+    with c1:
+        playlist = plot_dl_tsne(track_id_1=st.session_state.track1,
+                    track_id_2=st.session_state.track2,
+                    show_playlist=st.session_state.show_playlist,
+                    playlist_len=st.session_state.length)
 
-
-    option2 = st.selectbox(
-        'Choose a second song if you want a progressive list',
-        options,  #pass on a column from df to have list of artists
-        key='choose_track2',
-        on_change = choose_track2
-    )
-    st.write('You selected:', option2)
-    st.write('Track ID = ', st.session_state.track2)
+    with c2:
+        #choose_track()
+        option1 = st.selectbox(
+            'What are we playing?',
+            options,  #pass on a column from df to have list of artists
+            key='choose_track1',
+            on_change = choose_track
+        )
+        st.write('You selected:', option1)
+        st.write('Track ID = ', st.session_state.track1)
 
 
-    # show_all()
-    choose_playlist_length()
-    st.radio('Show playlist', ('Yes', 'No'), key='show_playlist', index=1)
+        option2 = st.selectbox(
+            'Choose a second song if you want a progressive list',
+            options,  #pass on a column from df to have list of artists
+            key='choose_track2',
+            on_change = choose_track2
+        )
+        st.write('You selected:', option2)
+        st.write('Track ID = ', st.session_state.track2)
 
 
-    st.write('Playlist', playlist.style.hide_index())
+        # show_all()
+        choose_playlist_length()
+        st.radio('Show playlist', ('Yes', 'No'), key='show_playlist', index=1)
+
+        playlist.style.hide_index()
+        st.dataframe(playlist)
+white_check_mark
+eyes
+raised_hands

@@ -1,12 +1,4 @@
-# import pandas as pd
-# import numpy as np
-# from sklearn.preprocessing import MinMaxScaler
-# from sklearn.decomposition import PCA
-# import plotly.graph_objects as go
-# import plotly.express as px
 import streamlit as st
-# import streamlit.components.v1 as components
-# import plotly.graph_objects as go
 
 
 def vis():
