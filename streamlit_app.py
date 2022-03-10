@@ -9,7 +9,7 @@ PAGES = {
     "Playlist": playlist
  }
 
-st.sidebar.write('## Audio Analyses for Better Playlists')
+st.sidebar.write('## Audio Analysis for Better Playlists')
 
 selection = st.sidebar.radio('Menu', list(PAGES.keys()))
 page = PAGES[selection]
