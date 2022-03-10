@@ -1,5 +1,5 @@
 import streamlit as st
-import data_vis, playlist_visualisation, playlist
+import playlist_visualisation, data_vis, playlist
 st.set_page_config(layout="wide")
 
 PAGES = {
