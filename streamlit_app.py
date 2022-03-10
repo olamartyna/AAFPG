@@ -5,7 +5,7 @@ st.set_page_config(layout="wide")
 PAGES = {
     "Home page": home,
     "Visualisation": playlist_visualisation,
-    "Tensorflow Projector": data_vis
+    "Tensorflow Projector": data_vis,
     "Playlist": playlist
  }
 
