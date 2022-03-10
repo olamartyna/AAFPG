@@ -12,6 +12,7 @@ import streamlit as st
 def vis():
 
     st.header('The Sonic Landscape through Tensorflow Projector')
+    st.markdown("<h1 style='text-align: center; color: red;'>Some title</h1>", unsafe_allow_html=True)
 
     # Projector Tensorflow
 

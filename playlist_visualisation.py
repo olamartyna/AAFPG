@@ -36,7 +36,7 @@ options= no_song.append(tracks['combined_info'])
 def initialize_state():
     st.session_state.track1 = None
     st.session_state.track2 = None
-    st.session_state.show_all = 'Yes'
+    st.session_state.show_playlist = 'Yes'
     st.session_state.length = 10
 
 
@@ -47,36 +47,47 @@ def choose_playlist_length():
 
 def choose_track():
 
-    track_id = tracks.index[tracks['combined_info']==st.session_state.choose_track1][0]
-
-    # st.audio(path_github +"/AAFPG/data/000002.mp3", format="audio/wav", start_time=0)
     if st.session_state.choose_track1 == "No song selected":
-        st.session_state.track1 = ""
-    st.session_state.track1 = track_id
+        st.session_state.track1 = None
+    else:
+        track_id = tracks.index[tracks['combined_info']==st.session_state.choose_track1][0]
+        st.session_state.track1 = track_id
 
 def choose_track2():
 
-    track_id = tracks.index[tracks['combined_info']==st.session_state.choose_track2][0]
-
-    # st.audio(path_github +"/AAFPG/data/000002.mp3", format="audio/wav", start_time=0)
     if st.session_state.choose_track2 == "No song selected":
-        st.session_state.track2 = ""
-    st.session_state.track2 = track_id
+        st.session_state.track2 = None
+    else:
+        track_id = tracks.index[tracks['combined_info']==st.session_state.choose_track2][0]
+        st.session_state.track2 = track_id
 
-def plot_dl_tsne(track_id_1=None, track_id_2=None, show_all = 'Yes', playlist_len=10):
 
-    if show_all=='Yes':
+
+def plot_dl_tsne(track_id_1=None,
+                 track_id_2=None,
+                 show_playlist = 'No',
+                 playlist_len=10):
+
+    if show_playlist=='No':
         playlist_display(dl_tsne, track=None)
+        playlist=[]
 
     elif track_id_1 != None and track_id_2 != None:
         playlist= progressive_playlist(track_1=track_id_1, track_2=track_id_2,  df=dl_tsne, playlist_len=playlist_len, cosine=False)
         playlist_display(dl_tsne, track=playlist)
 
-    else:
+    elif track_id_1 != None and track_id_2 == None:
         playlist= cohesive_playlist(base_track=track_id_1, df=dl_tsne, playlist_len=playlist_len, cosine=False)
         playlist_display(dl_tsne, track=playlist)
-        #playlist_display(dl_tsne, track=[track_id_1, track_id_2])
+    else:
+        playlist_display(dl_tsne, track=None)
+        playlist=[]
 
+    playlist_df = tracks['combined_info'].loc[playlist]
+    playlist_df = playlist_df.reset_index()
+    playlist_df.columns = ['Track_Id', 'Artist - Song Name - Genre']
+    playlist_df.set_index('Track_Id', inplace=True)
+    return playlist_df
 
 
 def playlist_display(df, track=None):
@@ -91,20 +102,7 @@ def playlist_display(df, track=None):
         z=df['2'].values,
         color= df['track_genre_top'],
         size= np.full(len(df['track_genre_top']), 0.2),
-        #marker=dict(
-        #    color= 'blue',
-        #    size=3,
-        #),
-        #line=dict(
-        #    color='white',
-        #    width=0.1
-        #),
-        #showlegend=True,
-        #legendgroup='track_genre_top',
-        #hoverinfo='skip',
         opacity=op,
-        #hovertext=list(df.index),
-        #name= 'Full tracks database'
         ))
     if track != None:
         selected_tracks = df.loc[list(track)]
@@ -127,21 +125,21 @@ def playlist_display(df, track=None):
     st.plotly_chart(fig)
 
 
-def show_all():
-    show_all = st.selectbox('Show all tracks?', ('Yes', 'No'), key='show_all')
-    if show_all == 'Yes':
-        return True
-    else:
-        return False
-
-
-
 
 def app():
-    #
+    # Initialize session states
     if 'track1' not in st.session_state:
-        initialize_state()
-    plot_dl_tsne(track_id_1=st.session_state.track1, track_id_2=st.session_state.track2, show_all=st.session_state.show_all, playlist_len=st.session_state.length)
+        st.session_state.track1 = None
+    if 'track2' not in st.session_state:
+        st.session_state.track2 = None
+    if 'show_playlist' not in st.session_state:
+        st.session_state.show_playlist = 'No'
+    if 'length' not in st.session_state:
+        st.session_state.length = 10
+    playlist = plot_dl_tsne(track_id_1=st.session_state.track1,
+                 track_id_2=st.session_state.track2,
+                 show_playlist=st.session_state.show_playlist,
+                 playlist_len=st.session_state.length)
 
     #choose_track()
 
@@ -166,6 +164,8 @@ def app():
 
 
     # show_all()
-
-    st.selectbox('Show all tracks?', ('Yes', 'No'), key='show_all')
     choose_playlist_length()
+    st.radio('Show playlist', ('Yes', 'No'), key='show_playlist', index=1)
+
+
+    st.write('Playlist', playlist.style.hide_index())
