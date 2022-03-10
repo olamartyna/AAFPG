@@ -18,7 +18,7 @@ from functions import play_track, cohesive_playlist, progressive_playlist
 
 # https://docs.streamlit.io/library/api-reference/media/st.audio
 
-st.markdown("<h1 style='text-align: center; color: black;'>Data Visualisation</h1>", unsafe_allow_html=True)
+
 path_github = "/app/aafpg/"
 tracks_path = path_github + 'AAFPG/data/metadata_with_vectors_reduced.csv'
 tracks = pd.read_csv(tracks_path, index_col = 0)
@@ -27,7 +27,7 @@ tracks['combined_info'] = tracks['artist_name']+' - '+tracks['track_title']+' - 
 dl_tsne_path = path_github + 'AAFPG/data/dl_cnn_tsne.csv'
 dl_tsne = pd.read_csv(dl_tsne_path, index_col = 0)
 
-
+st.markdown("<h1 style='text-align: center; color: black;'>Data Visualisation</h1>", unsafe_allow_html=True)
 tracks = tracks.loc[list(dl_tsne.index)]
 
 no_song= pd.Series(["No song selected"])

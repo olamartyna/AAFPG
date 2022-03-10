@@ -21,6 +21,6 @@ PAGES = {
 
 # st.sidebar.write('### Menu')
 
-selection = st.sidebar.radio("### Menu", list(PAGES.keys()))
+selection = st.sidebar.radio('### Menu', list(PAGES.keys()))
 page = PAGES[selection]
 page.app()
