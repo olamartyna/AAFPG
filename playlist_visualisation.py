@@ -19,7 +19,7 @@ from functions import play_track, cohesive_playlist, progressive_playlist
 # https://docs.streamlit.io/library/api-reference/media/st.audio
 
 
-path_github = ""
+path_github = "/app/aafpg/"
 tracks_path = path_github + 'AAFPG/data/metadata_with_vectors_reduced.csv'
 tracks = pd.read_csv(tracks_path, index_col = 0)
 tracks['combined_info'] = tracks['artist_name']+' - '+tracks['track_title']+' - '+tracks['track_genre_top']

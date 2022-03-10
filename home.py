@@ -8,8 +8,8 @@ def welcome():
     # from PIL import Image
     # image = Image.open('AAFPG/data/home page image.jpg')
     # st.image(image)
-
-    st.image('AAFPG/data/home page image.jpg', width = 1920)
+    path_github = "/app/aafpg/"
+    st.image(path_github + 'AAFPG/data/home page image.jpg', width = 1920)
 
 
 def app():
