@@ -30,8 +30,8 @@ def initialize_state():
 
 
 def choose_playlist_length():
-    lenght= st.selectbox(
-        'Playlist lenght?', (range(5, 21)), key= 'length'
+    length= st.selectbox(
+        'Playlist length?', (range(5, 21)), key= 'length'
     )
 
 def choose_track():
