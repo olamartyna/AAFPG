@@ -1,9 +1,9 @@
 import streamlit as st
-import home, data_vis, playlist_visualisation, playlist
+import data_vis, playlist_visualisation, playlist  # home
 st.set_page_config(layout="wide")
 
 PAGES = {
-    "Home page": home,
+    # "Home page": home,
     "Visualisation": playlist_visualisation,
     "Tensorflow Projector": data_vis,
     "Playlist": playlist
