@@ -18,7 +18,7 @@ from functions import play_track, cohesive_playlist, progressive_playlist
 
 # https://docs.streamlit.io/library/api-reference/media/st.audio
 
-
+st.markdown("<h1 style='text-align: center; color: black;'>Data Visualisation</h1>", unsafe_allow_html=True)
 path_github = "/app/aafpg/"
 tracks_path = path_github + 'AAFPG/data/metadata_with_vectors_reduced.csv'
 tracks = pd.read_csv(tracks_path, index_col = 0)

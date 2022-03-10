@@ -15,12 +15,12 @@ import home, data_vis, playlist_visualisation
 
 PAGES = {
     "Home page": home,
-    "Playlist visualisation": playlist_visualisation,
+    "Visualisation": playlist_visualisation,
     "Tensorflow Projector": data_vis
  }
 
-st.sidebar.write('### Navigation')
+# st.sidebar.write('### Menu')
 
-selection = st.sidebar.radio("Go to", list(PAGES.keys()))
+selection = st.sidebar.radio("### Menu", list(PAGES.keys()))
 page = PAGES[selection]
 page.app()

@@ -9,7 +9,7 @@ def welcome():
     # image = Image.open('AAFPG/data/home page image.jpg')
     # st.image(image)
     path_github = "/app/aafpg/"
-    st.image(path_github + 'AAFPG/data/home page image.jpg', width = 1400)
+    st.image(path_github + 'AAFPG/data/home page image.jpg', width = 1100)
 
 
 def app():
