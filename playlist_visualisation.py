@@ -1,6 +1,6 @@
 import streamlit as st
 import streamlit.components.v1 as components
-from data_vis import path_github
+# from data_vis import path_github
 import pandas as pd
 import plotly.express as px
 
@@ -18,7 +18,7 @@ from functions import play_track, cohesive_playlist, progressive_playlist
 # https://docs.streamlit.io/library/api-reference/media/st.audio
 
 
-path_github = ""
+path_github = "aafpg/"
 tracks_path = path_github + 'AAFPG/data/tracks_info.csv'
 tracks = pd.read_csv(tracks_path, index_col = 0)
 tracks['combined_info'] = tracks['artist_name']+' - '+tracks['track_title']+' - '+tracks['genre']
@@ -63,7 +63,44 @@ def plot_ml_pca(track_id, show_all = False):
     st.plotly_chart(fig)
 
 
+import plotly.graph_objects as go
 
+def playlist_display(df, track=None):
+    '''takes the features df and plot it into a sactter 3D plot. If a track or list of track is given'''
+    selected_tracks = df.loc[track]
+
+    fig = go.Figure(data=go.Scatter3d(
+        x=selected_tracks['0'].values,
+        y=selected_tracks['1'].values,
+        z=selected_tracks['2'].values,
+        marker=dict(
+            size=4,
+        ),
+        line=dict(
+            color='darkblue',
+            width=2
+        ),
+        hovertext=list(selected_tracks.index),
+        name= 'Selected tracks'
+    ))
+
+    fig.add_scatter3d(x=df['0'].values,
+        y=df['1'].values,
+        z=df['2'].values,
+        marker=dict(
+            color='red',
+            size=3,
+        ),
+        line=dict(
+            color='white',
+            width=0.1
+        ),
+        hoverinfo='skip',
+        opacity=0.15,
+        hovertext=list(df.index),
+        name= 'Full tracks database'
+        )
+    fig.show()
 
 def show_all():
     show_all = st.selectbox('Show all tracks?', ('Yes', 'No'))
